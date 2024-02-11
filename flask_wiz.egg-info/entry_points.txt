@@ -1,0 +1,2 @@
+[console_scripts]
+flask-wiz = flask_wiz.cli:cli
