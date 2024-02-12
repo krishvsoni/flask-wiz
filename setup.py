@@ -28,7 +28,7 @@ elif selected_database == 'mongodb':
 
 setup(
     name='flask-wiz',
-    version='1.4',
+    version='1.5',
     author='Krish Soni',
     packages=find_packages(),
     include_package_data=True,

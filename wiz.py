@@ -38,7 +38,10 @@ def new():
         env_file.write("# Default .env file for Flask project\n")
 
     with open('app.py', 'w') as app_file:
+        db_module = None
+
         if db == 'mongodb':
+            db_module = 'pymongo'
             app_file.write(
                 """from flask import Flask
 from pymongo import MongoClient
@@ -55,6 +58,7 @@ if __name__ == '__main__':
     app.run()
 """)
         elif db == 'sqlite':
+            db_module = 'sqlite3'
             app_file.write(
                 """from flask import Flask
 import sqlite3
@@ -70,6 +74,7 @@ if __name__ == '__main__':
     app.run()
 """)
         elif db == 'mysql':
+            db_module = 'pymysql'
             app_file.write(
                 """from flask import Flask
 import pymysql
@@ -85,6 +90,7 @@ if __name__ == '__main__':
     app.run()
 """)
         elif db == 'postgresql':
+            db_module = 'psycopg2'
             app_file.write(
                 """from flask import Flask
 import psycopg2
@@ -99,6 +105,9 @@ def index():
 if __name__ == '__main__':
     app.run()
 """)
+
+    if db_module:
+        os.system(f"pip install {db_module}")  # Install the required database module
 
     click.echo(f'New Flask project "{name}" created successfully with {db} database!')
 
