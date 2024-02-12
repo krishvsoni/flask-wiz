@@ -1,2 +1,6 @@
 flask
 click
+sqlite
+mysql-connector-python
+psycopg2
+pymongo
