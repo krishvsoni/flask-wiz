@@ -1,0 +1,7 @@
+flask
+click
+Flask
+sqlite
+mysql-connector-python
+psycopg2
+pymongo

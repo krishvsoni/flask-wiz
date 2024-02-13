@@ -7,4 +7,5 @@ flask_wiz.egg-info/PKG-INFO
 flask_wiz.egg-info/SOURCES.txt
 flask_wiz.egg-info/dependency_links.txt
 flask_wiz.egg-info/entry_points.txt
+flask_wiz.egg-info/requires.txt
 flask_wiz.egg-info/top_level.txt
