@@ -17,18 +17,14 @@ def cli():
 
 @cli.command()
 def new():
-    # Prompt user for project name
     name = click.prompt('Enter project name')
 
-    # Prompt user for database system
     db_options = ['mongodb', 'sqlite', 'mysql', 'postgresql']
     db = click.prompt('Select database system', type=click.Choice(db_options))
 
-    # Additional setup code for the new project (e.g., creating files, folders, etc.)
     os.makedirs(name)
     os.chdir(name)
 
-    # Create directories for templates and static files
     os.makedirs('templates')
     os.makedirs('static')
 
@@ -37,14 +33,15 @@ def new():
         gitignore_file.write("venv/\n")
         gitignore_file.write("__pycache__/\n")
         gitignore_file.write(".vscode/\n")
-        # Add more entries as needed
 
     with open('.env', 'w') as env_file:
         env_file.write("# Default .env file for Flask project\n")
-        # Add default environment variables if needed
 
     with open('app.py', 'w') as app_file:
+        db_module = None
+
         if db == 'mongodb':
+            db_module = 'pymongo'
             app_file.write(
                 """from flask import Flask
 from pymongo import MongoClient
@@ -61,6 +58,7 @@ if __name__ == '__main__':
     app.run()
 """)
         elif db == 'sqlite':
+            db_module = 'sqlite3'
             app_file.write(
                 """from flask import Flask
 import sqlite3
@@ -76,6 +74,7 @@ if __name__ == '__main__':
     app.run()
 """)
         elif db == 'mysql':
+            db_module = 'pymysql'
             app_file.write(
                 """from flask import Flask
 import pymysql
@@ -91,6 +90,7 @@ if __name__ == '__main__':
     app.run()
 """)
         elif db == 'postgresql':
+            db_module = 'psycopg2'
             app_file.write(
                 """from flask import Flask
 import psycopg2
@@ -105,6 +105,9 @@ def index():
 if __name__ == '__main__':
     app.run()
 """)
+
+    if db_module:
+        os.system(f"pip install {db_module}")  # Install the required database module
 
     click.echo(f'New Flask project "{name}" created successfully with {db} database!')
 

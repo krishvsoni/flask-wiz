@@ -7,15 +7,15 @@ dependencies = [
     'flask',
     'click',
     'Flask',  
-    'sqlite',
-    'mysql-connector-python',
-    'psycopg2',
-    'pymongo',
+    # 'sqlite3',
+    # 'mysql-connector-python',
+    # 'psycopg2',
+    # 'pymongo',
 ]
 
 setup(
     name='flask-wiz',
-    version='1.6.3',
+    version='1.9.1',
     author='Krish Soni',
     packages=find_packages(),
     include_package_data=True,

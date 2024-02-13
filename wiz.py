@@ -58,7 +58,7 @@ if __name__ == '__main__':
     app.run()
 """)
         elif db == 'sqlite':
-            db_module = 'sqlite3'
+            #db_module = 'sqlite3'
             app_file.write(
                 """from flask import Flask
 import sqlite3
