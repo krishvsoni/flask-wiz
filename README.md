@@ -30,3 +30,6 @@ flask-wiz new
 4. **Start Developing**: Once the setup is complete, you're ready to start developing your Flask application!
 
 Flask-Wiz simplifies the setup process for Flask projects, allowing you to focus on building your application without worrying about initial configuration.
+
+## Need More Assistance
+- Visit: https://www.blackbox.ai/agent/flask-wizhelpN9qFZun
