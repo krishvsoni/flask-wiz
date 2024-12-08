@@ -82,7 +82,7 @@ def new():
         db_module = None
 
 
-        match db:
+        match db_input:
             case '1':
                 db_module = 'pymongo'
                 app_file.write(
