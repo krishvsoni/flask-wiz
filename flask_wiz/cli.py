@@ -2,6 +2,14 @@ import os
 import click
 from flask import Flask
 
+db_options = {'1':'mongodb', '2':'sqlite', '3':'mysql', '4':'postgresql'}
+value_key = {v: k for k,v in db_options.items()} #created reverse mapping of values to keys
+
+#to display options
+def display_options():
+    options = "\n".join([f"{key}: {value}" for key, value in db_options.items()])
+    return f"Select database system:\n{options}\n(Enter either key or value)" 
+
 def create_app():
     app = Flask(__name__)
 
@@ -19,14 +27,47 @@ def cli():
 def new():
     name = click.prompt('Enter project name')
 
-    db_options = ['mongodb', 'sqlite', 'mysql', 'postgresql']
-    db = click.prompt('Select database system', type=click.Choice(db_options))
+    click.echo(display_options())
+    db_input = click.prompt('Enter key / Value for db selection')
+
+    if db_input in db_options:
+        db = db_options[db_input]
+    elif db_input in value_key:
+        db = value_key[db_input]
+    else:
+        click.echo('Invalid input')
+        return
+    
+    Venv = click.prompt('Enter Virtual env name')
 
     os.makedirs(name)
     os.chdir(name)
 
     os.makedirs('templates')
+    os.chdir('templates')
+
+    with open('home.html', 'w') as home_file:
+        home_file.write("""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask-app</title>
+</head>
+<body>
+    <h1>Welcome to My Flask Project</h1>
+</body>
+</html>""")
+
+    os.chdir('..')
+
     os.makedirs('static')
+    os.chdir('static')
+
+    os.makedirs('css')
+    os.makedirs('js')
+    os.makedirs('img')
+    os.chdir('..')
 
     with open('.gitignore', 'w') as gitignore_file:
         gitignore_file.write("# Default .gitignore for Flask project\n")
@@ -40,9 +81,11 @@ def new():
     with open('app.py', 'w') as app_file:
         db_module = None
 
-        if db == 'mongodb':
-            db_module = 'pymongo'
-            app_file.write(
+
+        match db:
+            case '1':
+                db_module = 'pymongo'
+                app_file.write(
                 """from flask import Flask
 from pymongo import MongoClient
 
@@ -57,9 +100,9 @@ def index():
 if __name__ == '__main__':
     app.run()
 """)
-        elif db == 'sqlite':
-            db_module = 'sqlite3'
-            app_file.write(
+            case '2':
+                db_module = 'sqlite3'
+                app_file.write(
                 """from flask import Flask
 import sqlite3
 
@@ -73,9 +116,9 @@ def index():
 if __name__ == '__main__':
     app.run()
 """)
-        elif db == 'mysql':
-            db_module = 'pymysql'
-            app_file.write(
+            case '3':
+                db_module = 'pymysql'
+                app_file.write(
                 """from flask import Flask
 import pymysql
 
@@ -89,9 +132,9 @@ def index():
 if __name__ == '__main__':
     app.run()
 """)
-        elif db == 'postgresql':
-            db_module = 'psycopg2'
-            app_file.write(
+            case '4':
+                db_module = 'psycopg2'
+                app_file.write(
                 """from flask import Flask
 import psycopg2
 
@@ -105,11 +148,27 @@ def index():
 if __name__ == '__main__':
     app.run()
 """)
+            case _:
+                print('Invalid choice. Please choose a valid database system.')
 
     if db_module:
-        os.system(f"pip install {db_module}")  # Install the required database module
+        os.system(f"pip install virtualenv")
+        os.system(f"virtualenv {Venv}") #make virtual environment
 
-    click.echo(f'New Flask project "{name}" created successfully with {db} database!')
+        # #activate virtual environment in Windows
+        # os.chdir(Venv)
+        # os.chdir('Scripts')
+        # os.system(f"activate.ps1")
+        # os.chdir('..')
+        # os.chdir('..')
+
+        if db_module != 'sqlite3':
+            os.system(f"pip install {db_module}")  # Install the required database module
+
+        # to create a requirements file
+        os.system(f"pip freeze > requirements.txt")
+
+    click.echo(f'New Flask project "{name}" created successfully with {db_module} database!')
 
 if __name__ == '__main__':
     cli()
