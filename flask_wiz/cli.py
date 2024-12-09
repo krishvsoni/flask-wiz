@@ -1,6 +1,5 @@
 import os
 import click
-import subprocess
 from flask import Flask
 
 db_options = {'1':'mongodb', '2':'sqlite', '3':'mysql', '4':'postgresql'}
