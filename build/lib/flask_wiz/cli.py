@@ -58,10 +58,10 @@ def new():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flask-app</title>
+    <title>flask-wiz</title>
 </head>
 <body>
-    <h1>Welcome to My Flask Project</h1>
+    <h3><b>Flask API</b></h3>
     <p>{{ message }}</p>
 </body>
 </html>""")
@@ -84,6 +84,9 @@ def new():
 
     with open('.env', 'w') as env_file:
         env_file.write("# Default .env file for Flask project\n")
+        env_file.write("SECRET_KEY = \n")
+        env_file.write("DATABASE_URL = \n")
+        env_file.write("API_KEY = \n")
 
     with open('app.py', 'w') as app_file:
         db_module = None
