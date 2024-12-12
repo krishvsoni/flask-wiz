@@ -1,8 +1,11 @@
 Metadata-Version: 2.1
 Name: flask-wiz
-Version: 1.9.1
+Version: 1.9.2
 Author: Krish Soni
 Description-Content-Type: text/markdown
+Requires-Dist: flask
+Requires-Dist: click
+Requires-Dist: Flask
 
 # Flask-Wiz: Simplified Flask Setup
 
@@ -29,6 +32,17 @@ pip install flask-wiz
 
 ```Terminal
 flask-wiz new
+Project Name: my_project
+Database (MongoDB/SQLite/MySQL/PostgreSQL):
+```
+
+```Terminal
+<project_name>/
+│
+├── templates/
+├── static/
+├── .gitignore
+└── .env
 ```
 
 3. **Follow the Prompts**: Flask-Wiz will guide you through the setup process, including selecting your desired database and configuring directory structure.
@@ -36,3 +50,6 @@ flask-wiz new
 4. **Start Developing**: Once the setup is complete, you're ready to start developing your Flask application!
 
 Flask-Wiz simplifies the setup process for Flask projects, allowing you to focus on building your application without worrying about initial configuration.
+
+## Need More Assistance
+- Visit: https://www.blackbox.ai/agent/flask-wizhelpN9qFZun
