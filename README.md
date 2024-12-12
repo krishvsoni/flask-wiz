@@ -23,6 +23,17 @@ pip install flask-wiz
 
 ```Terminal
 flask-wiz new
+Project Name: my_project
+Database (MongoDB/SQLite/MySQL/PostgreSQL):
+```
+
+```Terminal
+<project_name>/
+│
+├── templates/
+├── static/
+├── .gitignore
+└── .env
 ```
 
 3. **Follow the Prompts**: Flask-Wiz will guide you through the setup process, including selecting your desired database and configuring directory structure.

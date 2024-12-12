@@ -61,7 +61,7 @@ def new():
     <title>Flask-app</title>
 </head>
 <body>
-    <h1>Welcome to My Flask Project</h1>
+    <h1>flask app generated with flask-wiz</h1>
     <p>{{ message }}</p>
 </body>
 </html>""")

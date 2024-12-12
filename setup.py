@@ -1,3 +1,4 @@
+
 from setuptools import setup, find_packages
 
 with open("README.md", "r", encoding="utf-8") as fh:
@@ -15,7 +16,7 @@ dependencies = [
 
 setup(
     name='flask-wiz',
-    version='1.9.1',
+    version='1.9.2',
     author='Krish Soni',
     packages=find_packages(),
     include_package_data=True,
