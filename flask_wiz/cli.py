@@ -2,7 +2,7 @@ import os
 import click
 from flask import Flask
 
-db_options = {'1':'mongodb', '2':'sqlite', '3':'mysql', '4':'postgresql'}
+db_options = {'1':'mongodb', '2':'sqlite3', '3':'mysql', '4':'postgresql'}
 value_key = {v: k for k,v in db_options.items()} #created reverse mapping of values to keys
 
 #to display options
@@ -25,18 +25,26 @@ def cli():
 
 @cli.command()
 def new():
-    name = click.prompt('Enter project name')
+    while True:
+        name = click.prompt('Enter project name')
+        if os.path.exists(name):
+            click.echo(f"Project {name} already exists. Please choose another name.")
+        else:
+            break
 
     click.echo(display_options())
-    db_input = click.prompt('Enter key / Value for db selection')
 
-    if db_input in db_options:
-        db = db_options[db_input]
-    elif db_input in value_key:
-        db = value_key[db_input]
-    else:
-        click.echo('Invalid input')
-        return
+    while True:
+        db_input = click.prompt('db selection')
+
+        if db_input in db_options:
+            db_key = db_input
+            break
+        elif db_input in value_key:
+            db_key = value_key[db_input]
+            break
+        else:
+            click.echo('Invalid input. Choose valid Database')
 
     os.makedirs(name)
     os.chdir(name)
@@ -76,12 +84,14 @@ def new():
 
     with open('.env', 'w') as env_file:
         env_file.write("# Default .env file for Flask project\n")
+        env_file.write("SECRET_KEY = \n")
+        env_file.write("DATABASE_URL = \n")
+        env_file.write("API_KEY = \n")
 
     with open('app.py', 'w') as app_file:
         db_module = None
 
-
-        match db_input:
+        match db_key:
             case '1':
                 db_module = 'pymongo'
                 app_file.write(
@@ -151,7 +161,8 @@ if __name__ == '__main__':
                 print('Invalid choice. Please choose a valid database system.')
 
     if db_module:
-
+        os.system("pip install flask")
+        
         if db_module != 'sqlite3':
             os.system(f"pip install {db_module}")  # Install the required database module
 
