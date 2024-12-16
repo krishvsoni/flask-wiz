@@ -1,6 +1,17 @@
 import os
 import click
+import requests
 from flask import Flask
+from bs4 import BeautifulSoup
+import subprocess
+
+db_options = {'1':'mongodb', '2':'sqlite3', '3':'mysql', '4':'postgresql'}
+value_key = {v: k for k,v in db_options.items()} #created reverse mapping of values to keys
+
+#to display options
+def display_options():
+    options = "\n".join([f"{key}: {value}" for key, value in db_options.items()])
+    return f"Select database system:\n{options}\n(Enter either key or value)" 
 
 def create_app():
     app = Flask(__name__)
@@ -15,18 +26,132 @@ def create_app():
 def cli():
     pass
 
+# To fetch user's repositories from github
+@cli.command()
+@click.argument('username')
+def fetch(username):
+    url = "https://github.com/"
+    tab = '?tab=repositories'
+
+    user_url = f"{url}{username}{tab}"
+    click.echo(f'fetching repositories for user : {username}')
+    user_file = username + '.txt'
+
+    try:
+        if not os.path.exists(user_file):
+            response = requests.get(user_url)
+            response.raise_for_status()
+            soup = BeautifulSoup(response.text, 'html.parser')
+
+            repo_links = soup.find_all('a',itemprop = 'name codeRepository')
+
+            repo_names = [repo.text.strip() for repo in repo_links]
+
+            if repo_names:
+                click.echo(f"Repositories for user '{username}' : ")
+                for repo in repo_names:
+                    click.echo(repo)
+                    with open(user_file, 'a') as f:
+                        f.write(repo+"\n")
+            else:
+                click.echo(f"No repositories found for user '{username}'")
+        else:
+            click.echo(f"User file already exists for user '{username}'")
+            click.echo("Use show command to see files")
+
+    except requests.exceptions.RequestException as e:
+        click.echo(f'Error fetching repositories: {e}')
+    except Exception as e:
+        click.echo(f"An unexpected error occured: {e}")
+
+# To show and get user's repositories
+@cli.command()
+@click.argument('username')
+def get(username):
+    user_file = username + '.txt'
+    try:
+        if os.path.exists(user_file):
+            with open(user_file) as f:
+                click.echo(f.read())
+        else:
+            click.echo(f"No user file found for user '{username}'")
+            return  # Exit if no user file is found
+
+        repo = click.prompt("Enter repo name to get")
+        
+        if not repo.strip():  # Check if repo name is empty
+            click.echo("Repo name cannot be empty.")
+            return
+
+        repo_url = f"https://github.com/{username}/{repo}".strip()
+        click.echo(f"Fetching repo: {repo_url}")
+        
+        # Attempt to clone the repository
+        try:
+            subprocess.run(['git','clone', repo_url], check=True)
+            click.echo(f'{repo} cloned successfully.')
+        except subprocess.CalledProcessError:
+            click.echo('Failed to clone repository')
+        except Exception as e:
+            click.echo(f'An error occured : {e}')
+
+    except Exception as e:
+        click.echo(f"An unexpected error occurred: {e}")
+
+
+# To create new project
 @cli.command()
 def new():
-    name = click.prompt('Enter project name')
+    while True:
+        name = click.prompt('Enter project name')
+        if os.path.exists(name):
+            click.echo(f"Project {name} already exists. Please choose another name.")
+        else:
+            break
 
-    db_options = ['mongodb', 'sqlite', 'mysql', 'postgresql']
-    db = click.prompt('Select database system', type=click.Choice(db_options))
+    click.echo(display_options())
+
+    while True:
+        db_input = click.prompt('db selection')
+
+        if db_input in db_options:
+            db_key = db_input
+            break
+        elif db_input in value_key:
+            db_key = value_key[db_input]
+            break
+        else:
+            click.echo('Invalid input. Choose valid Database')
 
     os.makedirs(name)
     os.chdir(name)
 
     os.makedirs('templates')
+    os.chdir('templates')
+
+    with open('home.html', 'w') as home_file:
+        home_file.write("""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask-app</title>
+</head>
+<body>
+    <h1>flask app generated with flask-wiz</h1>
+    <p>{{ message }}</p>
+</body>
+</html>""")
+
+    os.chdir('..')
+
     os.makedirs('static')
+    os.chdir('static')
+
+    os.makedirs('css')
+    os.makedirs('js')
+    os.makedirs('img')
+    os.chdir('..')
 
     with open('.gitignore', 'w') as gitignore_file:
         gitignore_file.write("# Default .gitignore for Flask project\n")
@@ -36,14 +161,18 @@ def new():
 
     with open('.env', 'w') as env_file:
         env_file.write("# Default .env file for Flask project\n")
+        env_file.write("SECRET_KEY = \n")
+        env_file.write("DATABASE_URL = \n")
+        env_file.write("API_KEY = \n")
 
     with open('app.py', 'w') as app_file:
         db_module = None
 
-        if db == 'mongodb':
-            db_module = 'pymongo'
-            app_file.write(
-                """from flask import Flask
+        match db_key:
+            case '1':
+                db_module = 'pymongo'
+                app_file.write(
+                """from flask import Flask, render_template, redirect
 from pymongo import MongoClient
 
 app = Flask(__name__)
@@ -52,15 +181,15 @@ db = client['my_database']
 
 @app.route('/')
 def index():
-    return 'Namaste Duniya! This is a Flask app generated by Flask-Wiz for MongoDB.'
+    return render_template('home.html', message = 'Namaste Duniya! This is a Flask app generated by Flask-Wiz for MongoDB.')
 
 if __name__ == '__main__':
     app.run()
 """)
-        elif db == 'sqlite':
-            #db_module = 'sqlite3'
-            app_file.write(
-                """from flask import Flask
+            case '2':
+                db_module = 'sqlite3'
+                app_file.write(
+                """from flask import Flask, render_template, redirect
 import sqlite3
 
 app = Flask(__name__)
@@ -68,15 +197,15 @@ conn = sqlite3.connect('database.db')
 
 @app.route('/')
 def index():
-    return 'Namaste Duniya! This is a Flask app generated by Flask-Wiz for SQLite.'
+    return render_template('home.html', message = 'Namaste Duniya! This is a Flask app generated by Flask-Wiz for SQLite.')
 
 if __name__ == '__main__':
     app.run()
 """)
-        elif db == 'mysql':
-            db_module = 'pymysql'
-            app_file.write(
-                """from flask import Flask
+            case '3':
+                db_module = 'pymysql'
+                app_file.write(
+                """from flask import Flask, render_template, redirect
 import pymysql
 
 app = Flask(__name__)
@@ -84,15 +213,15 @@ conn = pymysql.connect(host='localhost', user='root', password='', database='my_
 
 @app.route('/')
 def index():
-    return 'Namaste Duniya! This is a Flask app generated by Flask-Wiz MySQL.'
+    return render_template('home.html', message = 'Namaste Duniya! This is a Flask app generated by Flask-Wiz MySQL.')
 
 if __name__ == '__main__':
     app.run()
 """)
-        elif db == 'postgresql':
-            db_module = 'psycopg2'
-            app_file.write(
-                """from flask import Flask
+            case '4':
+                db_module = 'psycopg2'
+                app_file.write(
+                """from flask import Flask, render_template, redirect
 import psycopg2
 
 app = Flask(__name__)
@@ -100,16 +229,24 @@ conn = psycopg2.connect(host='localhost', user='postgres', password='', dbname='
 
 @app.route('/')
 def index():
-    return 'Namaste Duniya! This is a Flask app generated by Flask-Wiz PostgreSQL.'
+    return render_template('home.html', message = 'Namaste Duniya! This is a Flask app generated by Flask-Wiz PostgreSQL.')
 
 if __name__ == '__main__':
     app.run()
 """)
+            case _:
+                print('Invalid choice. Please choose a valid database system.')
 
     if db_module:
-        os.system(f"pip install {db_module}")  # Install the required database module
+        os.system("pip install flask")
+        
+        if db_module != 'sqlite3':
+            os.system(f"pip install {db_module}")  # Install the required database module
 
-    click.echo(f'New Flask project "{name}" created successfully with {db} database!')
+        # to create a requirements file
+        os.system(f"pip freeze > requirements.txt")
+
+    click.echo(f'New Flask project "{name}" created successfully with {db_module} database!')
 
 if __name__ == '__main__':
     cli()
