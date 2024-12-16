@@ -1,6 +1,9 @@
 import os
 import click
+import requests
 from flask import Flask
+from bs4 import BeautifulSoup
+import subprocess
 
 db_options = {'1':'mongodb', '2':'sqlite3', '3':'mysql', '4':'postgresql'}
 value_key = {v: k for k,v in db_options.items()} #created reverse mapping of values to keys
@@ -23,6 +26,80 @@ def create_app():
 def cli():
     pass
 
+# To fetch user's repositories from github
+@cli.command()
+@click.argument('username')
+def fetch(username):
+    url = "https://github.com/"
+    tab = '?tab=repositories'
+
+    user_url = f"{url}{username}{tab}"
+    click.echo(f'fetching repositories for user : {username}')
+    user_file = username + '.txt'
+
+    try:
+        if not os.path.exists(user_file):
+            response = requests.get(user_url)
+            response.raise_for_status()
+            soup = BeautifulSoup(response.text, 'html.parser')
+
+            repo_links = soup.find_all('a',itemprop = 'name codeRepository')
+
+            repo_names = [repo.text.strip() for repo in repo_links]
+
+            if repo_names:
+                click.echo(f"Repositories for user '{username}' : ")
+                for repo in repo_names:
+                    click.echo(repo)
+                    with open(user_file, 'a') as f:
+                        f.write(repo+"\n")
+            else:
+                click.echo(f"No repositories found for user '{username}'")
+        else:
+            click.echo(f"User file already exists for user '{username}'")
+            click.echo("Use show command to see files")
+
+    except requests.exceptions.RequestException as e:
+        click.echo(f'Error fetching repositories: {e}')
+    except Exception as e:
+        click.echo(f"An unexpected error occured: {e}")
+
+# To show and get user's repositories
+@cli.command()
+@click.argument('username')
+def get(username):
+    user_file = username + '.txt'
+    try:
+        if os.path.exists(user_file):
+            with open(user_file) as f:
+                click.echo(f.read())
+        else:
+            click.echo(f"No user file found for user '{username}'")
+            return  # Exit if no user file is found
+
+        repo = click.prompt("Enter repo name to get")
+        
+        if not repo.strip():  # Check if repo name is empty
+            click.echo("Repo name cannot be empty.")
+            return
+
+        repo_url = f"https://github.com/{username}/{repo}".strip()
+        click.echo(f"Fetching repo: {repo_url}")
+        
+        # Attempt to clone the repository
+        try:
+            subprocess.run(['git','clone', repo_url], check=True)
+            click.echo(f'{repo} cloned successfully.')
+        except subprocess.CalledProcessError:
+            click.echo('Failed to clone repository')
+        except Exception as e:
+            click.echo(f'An error occured : {e}')
+
+    except Exception as e:
+        click.echo(f"An unexpected error occurred: {e}")
+
+
+# To create new project
 @cli.command()
 def new():
     while True:
