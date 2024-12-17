@@ -135,10 +135,12 @@ def new():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flask-app</title>
+    <title>flask-wiz</title>
 </head>
 <body>
-    <h1>flask app generated with flask-wiz</h1>
+
+    <h3><b>Flask API</b></h3>
+
     <p>{{ message }}</p>
 </body>
 </html>""")
