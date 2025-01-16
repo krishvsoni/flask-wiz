@@ -37,15 +37,21 @@ Database (MongoDB/SQLite/MySQL/PostgreSQL):
 ```
 
 3. **Clone From Github**: Fetch your projects from github and clone to your local machine
+```bash
+flask-wiz get your-github-username
+
+enter your project-name:
+```
 
 
-3. **Follow the Prompts**: Flask-Wiz will guide you through the setup process, including selecting your desired database and configuring directory structure.
+4. **Follow the Prompts**: Flask-Wiz will guide you through the setup process, including selecting your desired database and configuring directory structure.
 
-4. **Start Developing**: Once the setup is complete, you're ready to start developing your Flask application!
+5. **Start Developing**: Once the setup is complete, you're ready to start developing your Flask application!
 
 Flask-Wiz simplifies the setup process for Flask projects, allowing you to focus on building your application without worrying about initial configuration.
 
-## Need More Assistance
+
+
 ## Need More Assistance
 
 - Have a question or need assistance? Raise an issue on our [Github Issues](https://github.com/krishvsoni/flask-wiz/issues)

@@ -16,7 +16,7 @@ dependencies = [
 
 setup(
     name='flask-wiz',
-    version='1.9.5',
+    version='1.9.6',
     author='Krish Soni',
     packages=find_packages(),
     include_package_data=True,
