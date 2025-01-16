@@ -46,4 +46,6 @@ Database (MongoDB/SQLite/MySQL/PostgreSQL):
 Flask-Wiz simplifies the setup process for Flask projects, allowing you to focus on building your application without worrying about initial configuration.
 
 ## Need More Assistance
-- Have a question or need assistance? Raise an issue on our (Github Issues)[https://github.com/krishvsoni/flask-wiz/issues]
+## Need More Assistance
+
+- Have a question or need assistance? Raise an issue on our [Github Issues](https://github.com/krishvsoni/flask-wiz/issues)
