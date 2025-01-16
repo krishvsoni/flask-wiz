@@ -6,9 +6,8 @@ from bs4 import BeautifulSoup
 import subprocess
 
 db_options = {'1':'mongodb', '2':'sqlite3', '3':'mysql', '4':'postgresql'}
-value_key = {v: k for k,v in db_options.items()} #created reverse mapping of values to keys
+value_key = {v: k for k,v in db_options.items()} 
 
-#to display options
 def display_options():
     options = "\n".join([f"{key}: {value}" for key, value in db_options.items()])
     return f"Select database system:\n{options}\n(Enter either key or value)" 
@@ -26,7 +25,6 @@ def create_app():
 def cli():
     pass
 
-# To fetch user's repositories from github
 @cli.command()
 @click.argument('username')
 def fetch(username):
@@ -138,9 +136,7 @@ def new():
     <title>flask-wiz</title>
 </head>
 <body>
-
     <h3><b>Flask API</b></h3>
-
     <p>{{ message }}</p>
 </body>
 </html>""")

@@ -86,7 +86,6 @@ def get(username):
         repo_url = f"https://github.com/{username}/{repo}".strip()
         click.echo(f"Fetching repo: {repo_url}")
         
-        # Attempt to clone the repository
         try:
             subprocess.run(['git','clone', repo_url], check=True)
             click.echo(f'{repo} cloned successfully.')
