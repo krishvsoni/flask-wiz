@@ -23,12 +23,33 @@ pip install flask-wiz
 
 ```Terminal
 flask-wiz new
+
 Project Name: my_project
+
+Do you need a frontend framework? [y/N]:
+
+Select a frontend framework:
+1: React
+2: VueJs
+3: NextJs
+4: Angular
+Enter frontend framework: 
+
 Database (MongoDB/SQLite/MySQL/PostgreSQL):
 ```
 
 ```Terminal
 <project_name>/
+
+client
+│
+├── src/
+├── vite.config.js/
+├── .gitignore
+└── .env
+
+
+server
 │
 ├── templates/
 ├── static/
