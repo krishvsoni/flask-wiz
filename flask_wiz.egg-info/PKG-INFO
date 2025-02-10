@@ -1,11 +1,13 @@
 Metadata-Version: 2.1
 Name: flask-wiz
-Version: 1.9.9
+Version: 1.9.9.1
 Author: Krish Soni
 Description-Content-Type: text/markdown
 Requires-Dist: flask
 Requires-Dist: click
 Requires-Dist: Flask
+Requires-Dist: flask_migrate
+Requires-Dist: flask_sqlalchemy
 
 # Flask-Wiz: Simplified Flask Setup
 

@@ -1,3 +1,5 @@
 flask
 click
 Flask
+flask_migrate
+flask_sqlalchemy

@@ -9,6 +9,8 @@ dependencies = [
     'click',
     'Flask',  
     # 'sqlite3',
+    'flask_migrate',
+    'flask_sqlalchemy',
     # 'mysql-connector-python',
     # 'psycopg2',
     # 'pymongo',
@@ -16,7 +18,7 @@ dependencies = [
 
 setup(
     name='flask-wiz',
-    version='1.9.9',
+    version='1.9.9.1',
     author='Krish Soni',
     packages=find_packages(),
     include_package_data=True,
