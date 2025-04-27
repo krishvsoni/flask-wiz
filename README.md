@@ -1,78 +1,119 @@
-# Flask-Wiz: Simplified Flask Setup
+[![PyPI version](https://badge.fury.io/py/flask-wiz.svg)](https://pypi.org/project/flask-wiz/)  
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Flask-Wiz is a setup library for Flask that simplifies the process of starting a new Flask project. It provides a boilerplate setup for Flask applications, including database integration and directory structure for templates and static files.
+# Flask-Wiz
 
-## Key Features:
+> Effortlessly generate Flask project structures with optional frontend and database setup.
 
-- **Flask Boilerplate**: Get started quickly with a clean and minimal Flask app structure.
-- **Database Setup**: Choose from popular databases including MongoDB, SQLite, MySQL, and PostgreSQL for seamless integration with your Flask application.
-- **Directory Structure**: Automatically create directories for templates and static files, making it easy to organize your project assets.
-
-## How to Use:
-
-1. **Installation**: Install Flask-Wiz using pip:
-
-``` Terminal 
-
-pip install flask-wiz
-
-```
+**Flask-Wiz** is a Python package that helps you easily generate a Flask project structure.  
+It allows you to optionally integrate popular frontend frameworks and choose from multiple database options, keeping the backend powered by Flask.
 
 
-2. **Create a New Flask Project**: Use the following command to create a new Flask project with Flask-Wiz:
+## Key Features
 
-```Terminal
-flask-wiz new
-
-Project Name: my_project
-
-Do you need a frontend framework? [y/N]:
-
-Select a frontend framework:
-1: React
-2: VueJs
-3: NextJs
-4: Angular
-Enter frontend framework: 
-
-Database (MongoDB/SQLite/MySQL/PostgreSQL):
-```
-
-```Terminal
-<project_name>/
-
-client
-│
-├── src/
-├── vite.config.js/
-├── .gitignore
-└── .env
+- Scaffold a clean **Flask backend** project quickly.
+- Optionally set up a frontend with frameworks like **React.js**, **Next.js**, **Vue.js**, or **Angular**.
+- Choose from multiple database options: **SQLite**, **MySQL**, **PostgreSQL**, or **MongoDB**.
+- Interactive command-line prompts using **Inquirer** to simplify project setup.
+- Clean separation of backend (`server/`) and frontend (`client/`) folders.
 
 
-server
-│
-├── templates/
-├── static/
-├── .gitignore
-└── .env
-```
+## Installation
 
-3. **Clone From Github**: Fetch your projects from github and clone to your local machine
+Install Flask-Wiz from PyPI:
+
 ```bash
-flask-wiz get your-github-username
-
-enter your project-name:
+pip install flask-wiz
 ```
 
+## Usage
 
-4. **Follow the Prompts**: Flask-Wiz will guide you through the setup process, including selecting your desired database and configuring directory structure.
+To generate a new project, simply run:
 
-5. **Start Developing**: Once the setup is complete, you're ready to start developing your Flask application!
+```bash
+flask-wiz new
+```
 
-Flask-Wiz simplifies the setup process for Flask projects, allowing you to focus on building your application without worrying about initial configuration.
+You will be guided through an interactive setup where you can select:
+- Frontend framework (React, Vue, Next.js, Angular, or None)
+- Database (SQLite, MySQL, PostgreSQL, MongoDB)
 
+```bash
+Enter project name :
+
+Do you need a frontend framework? (Y/N) : 
+
+Select a framework :
+    > React.Js
+    > Vue.Js
+    > Next.Js
+    > Angular.Js
+
+Select a database system :
+    > pymongo
+    > sqlite3
+    > pymysql
+    > psycopg2-binary
+
+```
+
+Based on your choices, Flask-Wiz will generate a ready-to-use project structure.
+
+
+## Project Structure
+
+Typical generated structure:
+
+```
+project-name/
+|
+├── client/           # Frontend app (only if selected)
+|   ├── (React/Vue/Angular/Next.js starter)
+|
+├── server/           # Flask backend
+|   ├── app.py
+|   ├── requirements.txt
+|
+└── README.md         # Project README
+```
+
+- If no frontend is selected, only the `server/` folder is created.
+
+
+## Supported Frontend Frameworks
+
+- None (backend only)
+- React.js
+- Vue.js
+- Angular
+- Next.js
+
+## Supported Databases
+
+- SQLite (default for Flask)
+- MySQL
+- PostgreSQL
+- MongoDB (PyMongo)
+
+
+## Why Use Flask-Wiz?
+
+- Save time setting up a new Flask project.
+- Choose your preferred frontend integration or focus on backend only.
+- Supports both SQL and NoSQL databases.
+- Easy, interactive setup with minimal manual configuration.
+
+
+## Contributing
+
+If you find a bug or have ideas for improvements, feel free to open an issue or submit a pull request. Contributions are always welcome.
 
 
 ## Need More Assistance
 
 - Have a question or need assistance? Raise an issue on our [Github Issues](https://github.com/krishvsoni/flask-wiz/issues)
+
+
+## License
+
+Licensed under the [MIT License](LICENSE).

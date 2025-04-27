@@ -8,6 +8,7 @@ dependencies = [
     'flask',
     'click',
     'Flask',  
+    'inquirer',
     # 'sqlite3',
     'flask_migrate',
     'flask_sqlalchemy',
