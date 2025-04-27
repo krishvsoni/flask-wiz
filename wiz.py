@@ -126,6 +126,9 @@ if __name__ == '__main__':
     
     os.chdir('..')
 
+    with open('README.md', 'w') as readme_file:
+        readme_file.write(f"# {name}\n\nThis is a Flask project with {db_module} as the database.\n")
+
     if frontend_framework:
         os.makedirs('client')
         os.chdir('client')
@@ -153,7 +156,7 @@ if __name__ == '__main__':
     click.echo(f"Project {name} created successfully!")
     click.echo("\nTo start the server, run:")
     click.echo(f"""\ncd {name}/server
-pip install -r .\requirements.txt
+pip install -r .\\requirements.txt
 python app.py""")
     if frontend_framework:
         click.echo(f"\nTo start the client, run:")
