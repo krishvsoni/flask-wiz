@@ -1,8 +1,0 @@
-flask-wiz
-Jar_ai
-Rahul-Suthar
-Tasks
-C
-Java
-Web-Development
-Sigma-Web-Dev-Course
