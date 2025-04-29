@@ -1,3 +1,4 @@
+LICENSE
 README.md
 setup.py
 flask_wiz/__init__.py
