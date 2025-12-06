@@ -99,13 +99,8 @@ project-name/
 - Easy, interactive setup with minimal manual configuration.
 
 ## Companies Using Flask-Wiz
-- **Sentio**: Sentio leverages Flask-Wiz to build API endpoints for their Offchain Analyzer, enabling efficient code analysis. Learn more at [sentio-ao.xyz](https://sentio-ao.xyz).
+- **Sentio**: Sentio leverages Flask-Wiz to build API endpoints for their Offchain Analyzer, enabling efficient code analysis. Learn more at [sentio-ao.xyz](https://sentio.vercel.app).
 
-Flask-Wiz is trusted by developers and teams across various industries. Some of the companies using Flask-Wiz include:
-- **TechNova Solutions**: Uses Flask-Wiz to streamline backend and frontend setup for their software projects.
-- **DataSphere Analytics**: Builds Flask-based tools for data visualization quickly and efficiently.
-- **CodeCraft Studios**: Accelerates the development of full-stack applications for their clients.
-- **InnovateX Labs**: Creates scalable Flask applications with seamless frontend integration.
 
 ## Contributing
 
